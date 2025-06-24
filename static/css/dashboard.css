@@ -33,11 +33,19 @@
   .sidebar li {
     padding: 10px;
     cursor: pointer;
+   
   }
   
   .sidebar li:hover {
     background: #3b82f6;
     border-radius: 5px;
+  }
+
+
+   a{
+    list-style: none;
+    text-decoration: none;
+    color: #fff;
   }
   
   .sidebar .sair {
