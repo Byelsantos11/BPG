@@ -1,4 +1,4 @@
-// ========== SAIR ==========
+// Sair 
 const sair = document.getElementById("sair");
 sair.addEventListener("click", () => {
   sair.textContent = "Saindo...";
@@ -8,7 +8,7 @@ sair.addEventListener("click", () => {
   }, 1000);
 });
 
-// ========== VARIÁVEIS ==========
+// Vriáveis 
 const btnNovoProduto = document.getElementById("btn-novo-produto");
 const formProduto = document.getElementById("form-produto");
 const cancelar = document.getElementById("cancelar");
@@ -19,12 +19,12 @@ const buscaInput = document.getElementById("pesquisa-produto");
 let produtosCarregados = [];
 let idProdutoEditando = null;
 
-// ======= Formulário de edição =========
+// variável de edição 
 const formEditar = document.getElementById("form-cliente-editar");
 const formEditarEl = document.getElementById("cliente-form-editar");
 const cancelarEditar = document.getElementById("cancelarEditar");
 
-// ========== FORMULÁRIO ==========
+// Abrir formulário
 btnNovoProduto.addEventListener("click", () => {
   formProduto.classList.remove("oculto");
   form.reset();
@@ -51,6 +51,7 @@ form.addEventListener("submit", async (e) => {
     categoria: document.getElementById("categoria").value,
   };
 
+  //Requisição criar produtos
   try {
     const res = await fetch("http://localhost:5000/api/produtos/criarProduto", {
       method: "POST",
@@ -76,7 +77,7 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// ========== EDIÇÃO ==========
+// Edição variável 
 function preencherFormularioEdicao(produto) {
   document.getElementById("nomeEditar").value = produto.nome;
   document.getElementById("descricaoEditar").value = produto.descricao;
@@ -89,6 +90,7 @@ function preencherFormularioEdicao(produto) {
   formEditar.classList.remove("oculto");
 }
 
+//Fechar tela de edição
 cancelarEditar.addEventListener("click", () => {
   formEditar.classList.add("oculto");
   formEditarEl.reset();
@@ -135,7 +137,7 @@ formEditarEl.addEventListener("submit", async (e) => {
   }
 });
 
-// ========== TABELA ==========
+// Tabela
 function popularTabela(produtos) {
   if (!produtos || produtos.length === 0) {
     lista.innerHTML = "<tr><td colspan='7'>Nenhum produto encontrado.</td></tr>";
@@ -180,7 +182,7 @@ function popularTabela(produtos) {
   });
 }
 
-// ========== DELETAR ==========
+// Deletar produtos 
 async function deletarProduto(id) {
   const token = localStorage.getItem("token");
   if (!token) return alert("Usuário não autenticado!");
@@ -205,7 +207,7 @@ async function deletarProduto(id) {
   }
 }
 
-// ========== CARREGAR PRODUTOS ==========
+// Carregar Produtos
 async function carregarProdutos() {
   const token = localStorage.getItem("token");
   if (!token) return alert("Usuário não autenticado!");
@@ -231,7 +233,7 @@ async function carregarProdutos() {
   }
 }
 
-// ========== BUSCA ==========
+// Busca 
 if (buscaInput) {
   buscaInput.addEventListener("input", () => {
     const termo = buscaInput.value.toLowerCase();
@@ -250,5 +252,5 @@ if (buscaInput) {
   });
 }
 
-// ========== INICIAR ==========
+// Iniciar
 carregarProdutos();
