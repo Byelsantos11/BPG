@@ -61,12 +61,12 @@ async function atualizarServicos() {
   if (!token) return;
 
   try {
-    const res = await fetch("http://localhost:5000/api/servicos/ativos", {
+    const res = await fetch("http://localhost:5000/api/servicos/quantidadeServico", {
       headers: { "Authorization": `Bearer ${token}` }
     });
     if (!res.ok) throw new Error("Erro ao buscar serviços ativos");
     const data = await res.json();
-    document.getElementById("servicos").textContent = data.total || 0;
+    document.getElementById("servicos").textContent = data.quantidade || 0;
   } catch (err) {
     console.error(err);
     document.getElementById("servicos").textContent = "Erro";

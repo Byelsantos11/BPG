@@ -98,15 +98,6 @@
       </li>
       </a>
 
-      <a href="./estoque.html"><li>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-             viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;">
-          <path d="M3 3v18h18V3zm8 16H5v-2h6zm0-4H5v-2h6zm0-4H5V9h6zm8 
-                   8h-6v-2h6zm0-4h-6v-2h6zm0-4h-6V9h6z"/>
-        </svg>
-        Estoque
-      </li>
-      </a>
 
       <a href="./historico.html"><li>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -133,52 +124,101 @@
     </ul>
   </div>
 
+
   <div class="main">
     <header>
-      <h2>Assistência Técnica</h2>
+      <h2>Serviços</h2>
       <button id="btn-novo-servico">+ Novo Serviço</button>
     </header>
 
-    <input type="text" id="pesquisa-servico" placeholder="Buscar serviços..." class="busca"/>
+    <input type="text" id="pesquisa-servico" placeholder="Buscar produtos por nome, modelo ou categoria..." class="busca"/>
 
     <table>
       <thead>
         <tr>
-          <th>Cliente</th>
-          <th>Dispositivo</th>
-          <th>Status</th>
-          <th>Data</th>
-          <th>Ações</th>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Dispositivo</th>
+              <th>Serie</th>
+              <th>Problema</th>
+              <th>Responsável</th>
+              <th>Prev Entrega</th>
+              <th>Status</th>
+              <th>Prioridade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          
         </tr>
       </thead>
       <tbody id="tabela-servicos">
-        <tr><td colspan="5">Nenhum Serviço</td></tr>
+        <tr><td colspan="5">Nenhum serviço encontrado.</td></tr>
       </tbody>
+      
     </table>
-  </div>
 
-  <!-- Modal novo/editar serviço -->
-  <div id="modal-servico" class="modal">
-    <div class="modal-content">
-      <h3 id="modal-title">Novo Serviço</h3>
-      <form id="form-servico">
-        <input type="text" id="cliente" placeholder="Cliente" required />
-        <input type="text" id="dispositivo" placeholder="Dispositivo" required />
-        <select id="status" required>
-          <option value="">-- Selecione o status --</option>
-          <option value="Pendente">Pendente</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Concluído">Concluído</option>
-          <option value="Cancelado">Cancelado</option>
-        </select>
-        <input type="date" id="data" required />
-        <div class="modal-buttons">
-          <button type="button" id="btn-cancelar">Cancelar</button>
-          <button type="submit" id="btn-salvar">Salvar</button>
-        </div>
-      </form>
+<!-- Formulário de Serviço (Criar / Editar) -->
+<div id="form-servico" class="formulario oculto">
+  <h3 id="titulo-form-servico">Novo Serviço</h3>
+  <form id="service-form">
+    <!-- Campo oculto para armazenar o ID (usado na edição) -->
+    <input type="hidden" id="servico_id" />
+
+    <select id="user_id" required>
+      <option value="" disabled selected>Selecione o cliente</option>
+    </select>
+    
+    <input type="text" id="dispositivo" placeholder="Dispositivo" required />
+    <input type="text" id="numero_serie" placeholder="Número de Série" required />
+    
+
+    <input type="date" id="previsao_conclusao" required />
+    <input type="text" id="descricao_problema" placeholder="Descrição do problema" required />
+    <input type="text" id="observacao_tecnica" placeholder="Observação técnica" required />
+
+
+    <select id="prioridade" required>
+      <option value="" disabled selected>Prioridade</option>
+      <option value="Baixa">Baixa</option>
+      <option value="Média">Média</option>
+      <option value="Alta">Alta</option>
+    </select>
+
+
+    <select id="tecnico" required>
+      <option value="" disabled selected>Selecione o técnico</option>
+      <option value="Michel">Michel</option>
+      <option value="Celso">Celso</option>
+    </select>
+
+    <select id="status" required>
+      <option value="" disabled selected>Status do serviço</option>
+      <option value="Pendente">Pendente</option>
+      <option value="Em diagnóstico">Em diagnóstico</option>
+      <option value="Aguardando peças">Aguardando peças</option>
+      <option value="Em andamento">Em andamento</option>
+      <option value="Concluído">Concluído</option>
+      <option value="Cancelado">Cancelado</option>
+    </select>
+
+    <div class="botoes">
+      <button type="button" id="cancelar">Cancelar</button>
+      <button type="submit">Salvar</button>
     </div>
+  </form>
+</div>
+
+
+<div id="modal-detalhes" class="modal oculto">
+  <div class="modal-conteudo">
+    <span class="fechar" id="fechar-modal">&times;</span>
+    <h2>Detalhes do Serviço</h2>
+    <div id="conteudo-modal"></div>
   </div>
+</div>
+
+
 
   <script src="./static/js/assistencia.js"></script>
 </body>

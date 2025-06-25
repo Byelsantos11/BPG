@@ -1,222 +1,254 @@
-const modal = document.getElementById("modal-servico");
+// Sair 
+const sair = document.getElementById("sair");
+sair.addEventListener("click", () => {
+  sair.textContent = "Saindo...";
+  localStorage.removeItem("token");
+  setTimeout(() => {
+    window.location.href = "./Login.html";
+  }, 1000);
+});
+
+// Variáveis 
 const btnNovoServico = document.getElementById("btn-novo-servico");
-const btnCancelar = document.getElementById("btn-cancelar");
 const formServico = document.getElementById("form-servico");
-const modalTitle = document.getElementById("modal-title");
-const tabelaServicos = document.getElementById("tabela-servicos");
-const inputPesquisa = document.getElementById("pesquisa-servico");
+const cancelar = document.getElementById("cancelar");
+const form = document.getElementById("service-form");
+const lista = document.getElementById("tabela-servicos");
+const buscaInput = document.getElementById("pesquisa-servico");
 
-let servicosCache = [];
-let servicoIdEditar = null;
+let servicosCarregados = [];
 
-// Abrir modal novo serviço
+// Abrir formulário
 btnNovoServico.addEventListener("click", () => {
-  servicoIdEditar = null;
-  modalTitle.textContent = "Novo Serviço";
-  formServico.reset();
-  modal.classList.add("show");
+  document.getElementById("titulo-form-servico").textContent = "Novo Serviço";
+  document.getElementById("servico_id").value = "";
+  formServico.classList.remove("oculto");
+  form.reset();
 });
 
-// Cancelar modal
-btnCancelar.addEventListener("click", () => {
-  modal.classList.remove("show");
-  servicoIdEditar = null;
+// Fechar formulário
+cancelar.addEventListener("click", () => {
+  formServico.classList.add("oculto");
+  form.reset();
 });
 
-// Fechar modal clicando fora
-modal.addEventListener("click", e => {
-  if(e.target === modal){
-    modal.classList.remove("show");
-    servicoIdEditar = null;
-  }
-});
-
-// Carregar serviços do backend
-async function carregarServicos(){
+// Submeter formulário (criar ou editar)
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
   const token = localStorage.getItem("token");
-  if(!token){
-    alert("Acesso negado! Faça login.");
-    return;
-  }
+  if (!token) return alert("Usuário não autenticado!");
 
-  tabelaServicos.innerHTML = `<tr><td colspan="5">Carregando serviços...</td></tr>`;
+  const id = document.getElementById("servico_id").value;
+
+  const servico = {
+    user_id: document.getElementById("user_id").value,
+    dispositivo: document.getElementById("dispositivo").value.trim(),
+    numero_serie: document.getElementById("numero_serie").value.trim(),
+    tecnico: document.getElementById("tecnico").value,
+    status_servico: document.getElementById("status").value,
+    prioridade: document.getElementById("prioridade").value,
+    previsao_conclusao: document.getElementById("previsao_conclusao").value,
+    descricao_problema: document.getElementById("descricao_problema").value.trim(),
+    observacao_tecnica: document.getElementById("observacao_tecnica").value.trim()
+  };
+
+  const url = id
+    ? `http://localhost:5000/api/servicos/editarServico/${id}`
+    : `http://localhost:5000/api/servicos/criarServico`;
+
+  const metodo = id ? "PUT" : "POST";
 
   try {
-    const res = await fetch("http://localhost:5000/api/assistencia/listarServicos", {
-      method: "GET",
+    const res = await fetch(url, {
+      method: metodo,
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(servico),
     });
 
-    if(!res.ok){
-      tabelaServicos.innerHTML = `<tr><td colspan="5">Erro ao buscar serviços</td></tr>`;
+    if (res.ok) {
+      alert(`Serviço ${id ? "atualizado" : "cadastrado"} com sucesso!`);
+      form.reset();
+      document.getElementById("servico_id").value = "";
+      document.getElementById("titulo-form-servico").textContent = "Novo Serviço";
+      formServico.classList.add("oculto");
+      carregarServico();
+    } else {
+      const erro = await res.json();
+      alert(`Erro ao salvar serviço: ${erro?.message || res.status}`);
+    }
+  } catch (erro) {
+    alert("Erro na conexão com o servidor.");
+    console.error(erro);
+  }
+});
+
+// Carregar clientes no formulário
+async function carregarClientesNoFormulario() {
+  const token = localStorage.getItem("token");
+  const select = document.getElementById("user_id");
+
+  try {
+    const res = await fetch("http://localhost:5000/api/clientes/listaCliente", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await res.json();
+
+    select.innerHTML = `<option value="" disabled selected>Selecione o cliente</option>`;
+    data.clientes.forEach(cliente => {
+      const opt = document.createElement("option");
+      opt.value = cliente.id;
+      opt.textContent = cliente.nome;
+      select.appendChild(opt);
+    });
+  } catch (err) {
+    alert("Erro ao carregar clientes.");
+    console.error(err);
+  }
+}
+
+// Carregar serviços
+async function carregarServico() {
+  const token = localStorage.getItem("token");
+  if (!token) return alert("Usuário não autenticado!");
+
+  try {
+    const res = await fetch("http://localhost:5000/api/servicos/listarServico", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      alert("Erro ao carregar serviços.");
       return;
     }
 
     const data = await res.json();
-    servicosCache = data.servicos || [];
-    exibirServicos(servicosCache);
+    servicosCarregados = Array.isArray(data) ? data : [];
+    popularTabela(servicosCarregados);
 
-  } catch(error){
-    tabelaServicos.innerHTML = `<tr><td colspan="5">Erro ao carregar dados</td></tr>`;
-    console.error(error);
+  } catch (erro) {
+    alert("Erro na conexão com o servidor.");
+    console.error(erro);
   }
 }
 
 // Exibir serviços na tabela
-function exibirServicos(lista){
-  if(lista.length === 0){
-    tabelaServicos.innerHTML = `<tr><td colspan="5">Nenhum serviço encontrado.</td></tr>`;
+function popularTabela(listaServicos) {
+  if (!listaServicos || listaServicos.length === 0) {
+    lista.innerHTML = "<tr><td colspan='5'>Nenhum serviço encontrado.</td></tr>";
     return;
   }
 
-  tabelaServicos.innerHTML = "";
-
-  lista.forEach(servico => {
-    tabelaServicos.innerHTML += `
+  lista.innerHTML = "";
+  listaServicos.forEach((s) => {
+    lista.innerHTML += `
       <tr>
-        <td>${servico.cliente}</td>
-        <td>${servico.dispositivo}</td>
-        <td>${servico.status}</td>
-        <td>${new Date(servico.data).toLocaleDateString('pt-BR')}</td>
+        <td>${s.cliente?.nome || "Não informado"}</td>
+        <td>${s.dispositivo}</td>
+        <td>${s.numero_serie}</td>
+         <td>${s.descricao_problema}</td>
+          <td>${s.tecnico}</td>
+        <td>${new Date(s.previsao_conclusao).toLocaleDateString("pt-BR")}</td>
+        <td>${s.status_servico}</td>
+        <td>${s.prioridade}</td>
         <td>
-          <button class="editar" data-id="${servico.id}" title="Editar serviço">✏️</button>
-          <button class="deletar" data-id="${servico.id}" title="Deletar serviço">🗑️</button>
+          <button class="editar" data-id="${s.id}">✏️</button>
+          <button class="deletar" data-id="${s.id}">🗑️</button>
         </td>
       </tr>
     `;
   });
-
-  // Botões editar
-  document.querySelectorAll(".editar").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-id");
-      servicoIdEditar = id;
-      const servico = servicosCache.find(s => s.id == id);
-      if(!servico) return alert("Serviço não encontrado!");
-
-      modalTitle.textContent = "Editar Serviço";
-      formServico.cliente.value = servico.cliente;
-      formServico.dispositivo.value = servico.dispositivo;
-      formServico.status.value = servico.status;
-      formServico.data.value = servico.data.split("T")[0]; // YYYY-MM-DD
-
-      modal.classList.add("show");
-    });
-  });
-
-  // Botões deletar
-  document.querySelectorAll(".deletar").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      if(confirm("Tem certeza que deseja deletar este serviço?")){
-        await deletarServico(id);
-        carregarServicos();
-      }
-    });
-  });
 }
 
-// Salvar ou editar serviço
-formServico.addEventListener("submit", async e => {
-  e.preventDefault();
-
+// Deletar serviço
+lista.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
-  if(!token){
-    alert("Usuário não autenticado!");
-    return;
+  if (!token) return alert("Usuário não autenticado!");
+
+  const id = e.target.getAttribute("data-id");
+  if (!id) return;
+
+  if (e.target.classList.contains("deletar")) {
+    if (!confirm("Tem certeza que deseja excluir este serviço?")) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/servicos/excluirServico/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        carregarServico();
+      } else {
+        const erro = await res.json();
+        alert(`Erro ao excluir serviço: ${erro?.message || res.status}`);
+      }
+    } catch (erro) {
+      alert("Erro na conexão com o servidor.");
+      console.error(erro);
+    }
   }
 
-  const servico = {
-    cliente: formServico.cliente.value.trim(),
-    dispositivo: formServico.dispositivo.value.trim(),
-    status: formServico.status.value,
-    data: formServico.data.value
-  };
+  if (e.target.classList.contains("editar")) {
+    try {
+      const servico = servicosCarregados.find(s => s.id == id);
+      if (!servico) return alert("Serviço não encontrado.");
 
-  if(!servico.cliente || !servico.dispositivo || !servico.status || !servico.data){
-    alert("Preencha todos os campos corretamente.");
-    return;
-  }
+      // Preenche o formulário
+      document.getElementById("servico_id").value = servico.id;
+      document.getElementById("user_id").value = servico.user_id;
+      document.getElementById("dispositivo").value = servico.dispositivo;
+      document.getElementById("numero_serie").value = servico.numero_serie;
+      document.getElementById("tecnico").value = servico.tecnico;
+      document.getElementById("status").value = servico.status_servico;
+      document.getElementById("prioridade").value = servico.prioridade;
+      document.getElementById("previsao_conclusao").value = servico.previsao_conclusao?.split("T")[0] || "";
+      document.getElementById("descricao_problema").value = servico.descricao_problema || "";
+      document.getElementById("observacao_tecnica").value = servico.observacao_tecnica || "";
 
-  try {
-    let res;
+      document.getElementById("titulo-form-servico").textContent = "Editar Serviço";
+      formServico.classList.remove("oculto");
 
-    if(servicoIdEditar){
-      // Editar
-      res = await fetch(`http://localhost:5000/api/assistencia/editarServico/${servicoIdEditar}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(servico)
-      });
-    } else {
-      // Novo serviço
-      res = await fetch("http://localhost:5000/api/assistencia/criarServico", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(servico)
-      });
+    } catch (err) {
+      alert("Erro ao carregar dados do serviço.");
+      console.error(err);
     }
-
-    if(res.ok){
-      alert(servicoIdEditar ? "Serviço atualizado com sucesso!" : "Serviço criado com sucesso!");
-      modal.classList.remove("show");
-      servicoIdEditar = null;
-      formServico.reset();
-      carregarServicos();
-    } else {
-      const erro = await res.json();
-      alert(`Erro: ${erro?.message || res.status}`);
-    }
-
-  } catch(error){
-    alert("Erro na conexão com o servidor.");
-    console.error(error);
   }
 });
 
-// Deletar serviço
-async function deletarServico(id){
-  const token = localStorage.getItem("token");
-  try {
-    const res = await fetch(`http://localhost:5000/api/assistencia/excluirServico/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
+// Filtro pela barra de pesquisa
+buscaInput.addEventListener("input", () => {
+  const termo = buscaInput.value.trim().toLowerCase();
 
-    if(!res.ok){
-      alert("Erro ao deletar serviço!");
-    }
-  } catch(error){
-    alert("Erro na conexão com o servidor!");
-    console.error(error);
+  if (!termo) {
+    popularTabela(servicosCarregados);
+    return;
   }
-}
 
-// Pesquisa serviços
-inputPesquisa.addEventListener("input", () => {
-  const termo = inputPesquisa.value.toLowerCase().trim();
+  const filtrados = servicosCarregados.filter(s => {
+    const nomeCliente = s.cliente?.nome?.toLowerCase() || "";
+    const dispositivo = s.dispositivo.toLowerCase();
+    const status = s.status_servico.toLowerCase();
+    const numSerie = s.numero_serie.toLowerCase();
 
-  const filtrados = servicosCache.filter(s => {
     return (
-      s.cliente.toLowerCase().includes(termo) ||
-      s.dispositivo.toLowerCase().includes(termo) ||
-      s.status.toLowerCase().includes(termo) ||
-      new Date(s.data).toLocaleDateString('pt-BR').includes(termo)
+      nomeCliente.includes(termo) ||
+      dispositivo.includes(termo) ||
+      status.includes(termo) ||
+      numSerie.includes(termo)
     );
   });
 
-  exibirServicos(filtrados);
+  popularTabela(filtrados);
 });
 
-// Botão sair
-const sair = document.getElem
+// Inicializar
+carregarClientesNoFormulario();
+carregarServico();
