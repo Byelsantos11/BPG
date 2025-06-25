@@ -25,12 +25,12 @@ async function atualizarClientes() {
   if (!token) return;
 
   try {
-    const res = await fetch("http://localhost:5000/api/clientes/contar", {
+    const res = await fetch("http://localhost:5000/api/clientes/quantidadeCliente", {
       headers: { "Authorization": `Bearer ${token}` }
     });
     if (!res.ok) throw new Error("Erro ao buscar clientes");
     const data = await res.json();
-    document.getElementById("clientes").textContent = data.total || 0;
+    document.getElementById("clientes").textContent = data.quantidade || 0;
   } catch (err) {
     console.error(err);
     document.getElementById("clientes").textContent = "Erro";
@@ -43,12 +43,12 @@ async function atualizarProdutos() {
   if (!token) return;
 
   try {
-    const res = await fetch("http://localhost:5000/api/produtos/contar", {
+    const res = await fetch("http://localhost:5000/api/produtos/quantidadeProduto", {
       headers: { "Authorization": `Bearer ${token}` }
     });
     if (!res.ok) throw new Error("Erro ao buscar produtos");
     const data = await res.json();
-    document.getElementById("produtos").textContent = data.total || 0;
+    document.getElementById("produtos").textContent = data.quantidade || 0;
   } catch (err) {
     console.error(err);
     document.getElementById("produtos").textContent = "Erro";
