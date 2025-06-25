@@ -1,1 +1,1 @@
-# BPG
+# BPG-store
