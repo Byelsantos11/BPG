@@ -1,0 +1,176 @@
+@import url('dashboard.css');
+
+.main header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+#btn-novo-produto {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: #e5e7eb;
+  font-weight: 600;
+}
+
+.formulario {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.formulario h3 {
+  margin-bottom: 15px;
+}
+
+.formulario input,
+.formulario select {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.botoes button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.botoes #cancelar {
+  background-color: #ccc;
+}
+
+.botoes button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+.oculto {
+  display: none;
+}
+
+button.editar svg {
+  color: #2563eb; 
+  transition: color 0.3s ease;
+}
+
+button.editar:hover svg {
+  color: #1e40af;
+}
+
+button.deletar svg {
+  color: #bd0404; 
+  transition: color 0.3s ease;
+}
+
+button.deletar:hover svg {
+  color: #7a0000;
+}
+
+/* Responsividade igual cliente.css (table blocks, campos adaptados) */
+@media (max-width: 768px) {
+  .main header {
+    flex-direction: column;
+  }
+  #btn-novo-produto {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .formulario, .busca {
+    width: 100%;
+  }
+  .botoes {
+    flex-direction: column;
+  }
+  .botoes button {
+    width: 100%;
+  }
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead tr {
+    display: none;
+  }
+  tbody tr {
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  tbody td {
+    padding-left: 50%;
+    position: relative;
+  }
+  tbody td::before {
+    position: absolute;
+    left: 10px;
+    font-weight: 600;
+    color: #555;
+  }
+  tbody td:nth-of-type(1)::before { content: "Nome"; }
+  tbody td:nth-of-type(2)::before { content: "Categoria"; }
+  tbody td:nth-of-type(3)::before { content: "Preço"; }
+  tbody td:nth-of-type(4)::before { content: "Estoque"; }
+  tbody td:nth-of-type(5)::before { content: "Ações"; }
+}
+
+@media (max-width: 480px) {
+  #btn-novo-produto, .busca, .formulario input {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+  .botoes button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}

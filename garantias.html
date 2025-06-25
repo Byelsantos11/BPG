@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BPG Store | Garantias</title>
+  <link rel="stylesheet" href="./static/css/garantias.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>BPG Store</h2>
+    <ul>
+      <a href="./dashboard.html"><li>Dashboard</li></a>
+      <a href="./clientes.html"><li>Clientes</li></a>
+      <a href="./produtos.html"><li>Produtos</li></a>
+      <a href="./assistencia.html"><li>Assistência Técnica</li></a>
+      <a href="./garantias.html"><li class="active">Garantias</li></a>
+      <a href="./estoque.html"><li>Estoque</li></a>
+      <a href="./historico.html"><li>Histórico de Atendimentos</li></a>
+      <li class="sair"><button id="sair">Sair</button></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <header>
+      <h2>Garantias</h2>
+    </header>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Produto</th>
+          <th>Data Início</th>
+          <th>Data Fim</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-garantias">
+        <tr><td colspan="5">Carregando garantias...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="./static/js/garantias.js"></script>
+</body>
+</html>

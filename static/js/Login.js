@@ -1,48 +1,48 @@
-const btnEntrar = document.getElementById("entrar");
+document.getElementById("form-login").addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-btnEntrar.addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
+  const btnEntrar = document.getElementById("entrar");
 
   if (email === "" || senha === "") {
     alert("Preencha todos os campos!");
     return;
   }
 
-  // Desativa o botão temporariamente
+  // Validação simples de email (opcional)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("Digite um e-mail válido!");
+    return;
+  }
+
   btnEntrar.disabled = true;
   btnEntrar.textContent = "Entrando...";
 
   try {
-    const response = await fetch('http://localhost:5000/auth/login', {
-      method: 'POST',
+    const response = await fetch("http://localhost:5000/auth/login", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ username: email,  password: senha })
+      body: JSON.stringify({ username: email, password: senha }) // Altere para `email` se necessário
     });
 
     if (!response.ok) {
-      // tenta extrair mensagem de erro do backend, se houver
       const errorData = await response.json();
       const errorMsg = errorData.message || "Falha ao fazer login.";
       throw new Error(errorMsg);
     }
 
     const data = await response.json();
-    console.log('Login realizado com sucesso:', data);
+    localStorage.setItem("token", data.token);
 
-   
-    localStorage.setItem('token', data.token);
-
-    // Redireciona após login
+    // Redirecionar para o dashboard
     window.location.href = "./dashboard.html";
-
   } catch (error) {
-    console.error("Erro ao fazer login:", error);
     alert(error.message || "Email ou senha inválidos!");
   } finally {
-    // Reativa o botão
     btnEntrar.disabled = false;
     btnEntrar.textContent = "Entrar";
   }

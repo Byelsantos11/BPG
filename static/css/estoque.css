@@ -1,0 +1,86 @@
+@import url('dashboard.css');
+
+.main header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.tabela-estoque {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #e5e7eb;
+  font-weight: 600;
+}
+
+.status-baixo {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.status-normal {
+  color: #16a34a;
+}
+
+.status-medio {
+  color: #facc15;
+  font-weight: bold;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+  }
+
+  tbody td {
+    position: relative;
+    padding-left: 50%;
+  }
+
+  tbody td::before {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-weight: 600;
+    color: #444;
+  }
+}

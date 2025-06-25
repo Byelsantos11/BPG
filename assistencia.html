@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BPG Store | Assistência Técnica</title>
+  <link rel="stylesheet" href="./static/css/assistencia.css" />
+  <style>
+    /* Modal básico para o serviço */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      width: 420px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    }
+    .modal-content h3 {
+      margin-top: 0;
+    }
+    .modal-content input, .modal-content select {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .modal-buttons {
+      text-align: right;
+    }
+    .modal-buttons button {
+      margin-left: 8px;
+      padding: 6px 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>BPG Store</h2>
+    <ul>
+      <a href="./dashboard.html"><li>Dashboard</li></a>
+      <a href="./clientes.html"><li>Clientes</li></a>
+      <a href="./produtos.html"><li>Produtos</li></a>
+      <a href="./assistencia.html"><li class="active">Assistência Técnica</li></a>
+      <a href="./garantias.html"><li>Garantias</li></a>
+      <a href="./estoque.html"><li>Estoque</li></a>
+      <a href="./historico.html"><li>Histórico de Atendimentos</li></a>
+      <li class="sair"><button id="sair">Sair</button></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <header>
+      <h2>Assistência Técnica</h2>
+      <button id="btn-novo-servico">+ Novo Serviço</button>
+    </header>
+
+    <input type="text" id="pesquisa-servico" placeholder="Buscar serviços..." class="busca"/>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Dispositivo</th>
+          <th>Status</th>
+          <th>Data</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-servicos">
+        <tr><td colspan="5">Carregando serviços...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal novo/editar serviço -->
+  <div id="modal-servico" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Novo Serviço</h3>
+      <form id="form-servico">
+        <input type="text" id="cliente" placeholder="Cliente" required />
+        <input type="text" id="dispositivo" placeholder="Dispositivo" required />
+        <select id="status" required>
+          <option value="">-- Selecione o status --</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Em andamento">Em andamento</option>
+          <option value="Concluído">Concluído</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+        <input type="date" id="data" required />
+        <div class="modal-buttons">
+          <button type="button" id="btn-cancelar">Cancelar</button>
+          <button type="submit" id="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./static/js/assistencia.js"></script>
+</body>
+</html>

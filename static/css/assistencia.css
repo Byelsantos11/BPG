@@ -1,0 +1,87 @@
+@import url('dashboard.css');
+
+.main header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.botao-novo {
+  background-color: #2563eb;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  background: white;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+th {
+  background-color: #e5e7eb;
+  font-weight: 600;
+}
+
+.status {
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: #fff;
+}
+
+.status.andamento {
+  background-color: #3b82f6;
+}
+.status.atrasado {
+  background-color: #f87171;
+}
+.status.concluido {
+  background-color: #4ade80;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    background: white;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  tbody td {
+    padding-left: 50%;
+    position: relative;
+  }
+
+  tbody td::before {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-weight: 600;
+    color: #555;
+  }
+}

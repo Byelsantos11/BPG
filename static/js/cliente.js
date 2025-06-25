@@ -70,9 +70,9 @@ form.addEventListener("submit", async (e) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify(cliente)
+      body: JSON.stringify(cliente),
     });
 
     if (res.ok) {
@@ -115,14 +115,17 @@ formEditar.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch(`http://localhost:5000/api/clientes/editarCliente/${clienteIdEditar}`, {
-      method: "PUT", // ou PATCH conforme seu backend
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(clienteEditado)
-    });
+    const res = await fetch(
+      `http://localhost:5000/api/clientes/editarCliente/${clienteIdEditar}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(clienteEditado),
+      }
+    );
 
     if (res.ok) {
       alert("Cliente atualizado com sucesso!");
@@ -143,7 +146,8 @@ formEditar.addEventListener("submit", async (e) => {
 // Exibir clientes na tabela
 function exibirClientes(listaClientes) {
   if (listaClientes.length === 0) {
-    lista.innerHTML = "<tr><td colspan='5'>Nenhum usuário encontrado...</td></tr>";
+    lista.innerHTML =
+      "<tr><td colspan='5'>Nenhum cliente encontrado.</td></tr>";
     return;
   }
 
@@ -157,16 +161,11 @@ function exibirClientes(listaClientes) {
         <td>${cliente.endereco} - ${cliente.cidade}</td>
         <td>
           <button class="editar" data-id="${cliente.id}" title="Editar cliente">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.06 9.02L4 19.08V21h1.92l10.06-10.06-2.92-2.92zM17.66 3c-.39 0-.77.15-1.06.44l-1.83 1.83 
-                       3.75 3.75 1.83-1.83c.59-.59.59-1.54 0-2.12l-1.59-1.59c-.29-.29-.67-.44-1.07-.44z"/>
-            </svg>
+            ✏️
           </button>
 
           <button class="deletar" data-id="${cliente.id}" title="Deletar cliente">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M3 6h18v2H3V6zm2 3h14l-1.5 12.5a1 1 0 0 1-1 .5H8a1 1 0 0 1-1-.5L5 9zm5 2v7h2v-7H10zm4 0v7h2v-7h-2z"/>
-            </svg>
+            🗑️
           </button>
         </td>
       </tr>
@@ -174,7 +173,7 @@ function exibirClientes(listaClientes) {
   });
 
   // Eventos dos botões deletar
-  document.querySelectorAll(".deletar").forEach(botao => {
+  document.querySelectorAll(".deletar").forEach((botao) => {
     botao.addEventListener("click", () => {
       const id = botao.getAttribute("data-id");
       if (confirm("Tem certeza que deseja deletar este cliente?")) {
@@ -184,7 +183,7 @@ function exibirClientes(listaClientes) {
   });
 
   // Eventos dos botões editar
-  document.querySelectorAll(".editar").forEach(botao => {
+  document.querySelectorAll(".editar").forEach((botao) => {
     botao.addEventListener("click", (e) => {
       const id = botao.getAttribute("data-id");
       clienteIdEditar = id;
@@ -197,7 +196,7 @@ function exibirClientes(listaClientes) {
       const email = tds[1].textContent.trim();
       const telefone = tds[2].textContent.trim();
       const enderecoCidade = tds[3].textContent.trim();
-      const [endereco, cidade] = enderecoCidade.split(" - ").map(item => item.trim());
+      const [endereco, cidade] = enderecoCidade.split(" - ").map((item) => item.trim());
 
       // Preenche inputs do form editar
       document.getElementById("nomeEditar").value = nome;
@@ -227,8 +226,8 @@ async function carregarClientes() {
     const res = await fetch("http://localhost:5000/api/clientes/listaCliente", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!res.ok) {
@@ -250,7 +249,7 @@ async function carregarClientes() {
 inputPesquisa.addEventListener("input", () => {
   const termo = inputPesquisa.value.toLowerCase().trim();
 
-  const clientesFiltrados = clientesCache.filter(cliente => {
+  const clientesFiltrados = clientesCache.filter((cliente) => {
     return (
       cliente.nome.toLowerCase().includes(termo) ||
       cliente.email.toLowerCase().includes(termo) ||
@@ -272,8 +271,8 @@ async function deletarUsuario(id) {
     const res = await fetch(`http://localhost:5000/api/clientes/excluirCliente/${id}`, {
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!res.ok) {

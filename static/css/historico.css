@@ -1,0 +1,65 @@
+@import url('dashboard.css');
+
+.main header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+th {
+  background-color: #e5e7eb;
+  font-weight: 600;
+}
+
+/* Responsivo igual cliente.css */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead tr {
+    display: none;
+  }
+  tbody tr {
+    background: #fff;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  tbody td {
+    position: relative;
+    padding-left: 50%;
+  }
+  tbody td::before {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    width: 45%;
+    font-weight: bold;
+    color: #444;
+  }
+}
