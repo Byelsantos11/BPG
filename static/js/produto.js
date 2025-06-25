@@ -1,234 +1,254 @@
-// Variáveis modal e botões
-const modal = document.getElementById("modal-produto");
+// ========== SAIR ==========
+const sair = document.getElementById("sair");
+sair.addEventListener("click", () => {
+  sair.textContent = "Saindo...";
+  localStorage.removeItem("token");
+  setTimeout(() => {
+    window.location.href = "./Login.html";
+  }, 1000);
+});
+
+// ========== VARIÁVEIS ==========
 const btnNovoProduto = document.getElementById("btn-novo-produto");
-const btnCancelar = document.getElementById("btn-cancelar");
 const formProduto = document.getElementById("form-produto");
-const modalTitle = document.getElementById("modal-title");
-const btnSalvar = document.getElementById("btn-salvar");
-const tabelaProdutos = document.getElementById("tabela-produtos");
-const inputPesquisa = document.getElementById("pesquisa-produto");
+const cancelar = document.getElementById("cancelar");
+const form = document.getElementById("produto-form");
+const lista = document.getElementById("tabela-produtos");
+const buscaInput = document.getElementById("pesquisa-produto");
 
-let produtosCache = [];
-let produtoIdEditar = null; // id do produto em edição
+let produtosCarregados = [];
+let idProdutoEditando = null;
 
-// Mostrar modal para novo produto
+// ======= Formulário de edição =========
+const formEditar = document.getElementById("form-cliente-editar");
+const formEditarEl = document.getElementById("cliente-form-editar");
+const cancelarEditar = document.getElementById("cancelarEditar");
+
+// ========== FORMULÁRIO ==========
 btnNovoProduto.addEventListener("click", () => {
-  produtoIdEditar = null;
-  modalTitle.textContent = "Novo Produto";
-  formProduto.reset();
-  modal.classList.add("show");
+  formProduto.classList.remove("oculto");
+  form.reset();
 });
 
-// Cancelar modal
-btnCancelar.addEventListener("click", () => {
-  modal.classList.remove("show");
-  produtoIdEditar = null;
+cancelar.addEventListener("click", () => {
+  formProduto.classList.add("oculto");
+  form.reset();
 });
 
-// Fechar modal clicando fora do conteúdo
-modal.addEventListener("click", (e) => {
-  if(e.target === modal){
-    modal.classList.remove("show");
-    produtoIdEditar = null;
-  }
-});
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-// Carregar produtos do backend
-async function carregarProdutos() {
   const token = localStorage.getItem("token");
-  if (!token) {
-    alert("Acesso negado! Faça login.");
-    return;
-  }
+  if (!token) return alert("Usuário não autenticado!");
 
-  tabelaProdutos.innerHTML = `<tr><td colspan="5">Carregando produtos...</td></tr>`;
+  const produto = {
+    nome: document.getElementById("nome").value,
+    marca: document.getElementById("marca").value,
+    modelo: document.getElementById("modelo").value,
+    preco: Number(document.getElementById("preco").value),
+    estoque: Number(document.getElementById("estoque").value),
+    descricao: document.getElementById("descricao").value,
+    categoria: document.getElementById("categoria").value,
+  };
 
   try {
-    const res = await fetch("http://localhost:5000/api/produtos/listarProdutos", {
-      method: "GET",
+    const res = await fetch("http://localhost:5000/api/produtos/criarProduto", {
+      method: "POST",
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(produto),
     });
 
-    if (!res.ok) {
-      tabelaProdutos.innerHTML = `<tr><td colspan="5">Erro ao buscar produtos</td></tr>`;
-      return;
+    if (res.ok) {
+      alert("Produto cadastrado com sucesso!");
+      formProduto.classList.add("oculto");
+      form.reset();
+      carregarProdutos();
+    } else {
+      const erro = await res.json();
+      alert(`Erro ao salvar produto: ${erro?.message || res.status}`);
     }
-
-    const data = await res.json();
-    produtosCache = data.produtos || [];
-    exibirProdutos(produtosCache);
-
-  } catch (error) {
-    tabelaProdutos.innerHTML = `<tr><td colspan="5">Erro ao carregar dados</td></tr>`;
-    console.error(error);
+  } catch (erro) {
+    alert("Erro na conexão com o servidor.");
+    console.error(erro);
   }
+});
+
+// ========== EDIÇÃO ==========
+function preencherFormularioEdicao(produto) {
+  document.getElementById("nomeEditar").value = produto.nome;
+  document.getElementById("descricaoEditar").value = produto.descricao;
+  document.getElementById("marcaEditar").value = produto.marca;
+  document.getElementById("modeloEditar").value = produto.modelo;
+  document.getElementById("categoriaEditar").value = produto.categoria;
+  document.getElementById("precoEditar").value = produto.preco;
+  document.getElementById("estoqueEditar").value = produto.estoque;
+  idProdutoEditando = produto.id;
+  formEditar.classList.remove("oculto");
 }
 
-// Exibir produtos na tabela
-function exibirProdutos(listaProdutos) {
-  if (listaProdutos.length === 0) {
-    tabelaProdutos.innerHTML = `<tr><td colspan="5">Nenhum produto encontrado.</td></tr>`;
+cancelarEditar.addEventListener("click", () => {
+  formEditar.classList.add("oculto");
+  formEditarEl.reset();
+  idProdutoEditando = null;
+});
+
+formEditarEl.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem("token");
+  if (!token || !idProdutoEditando) return alert("Usuário não autenticado!");
+
+  const produtoEditado = {
+    nome: document.getElementById("nomeEditar").value,
+    descricao: document.getElementById("descricaoEditar").value,
+    marca: document.getElementById("marcaEditar").value,
+    modelo: document.getElementById("modeloEditar").value,
+    categoria: document.getElementById("categoriaEditar").value,
+    preco: Number(document.getElementById("precoEditar").value),
+    estoque: Number(document.getElementById("estoqueEditar").value),
+  };
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/produtos/editarProduto/${idProdutoEditando}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(produtoEditado),
+    });
+
+    if (res.ok) {
+      alert("Produto editado com sucesso!");
+      formEditar.classList.add("oculto");
+      formEditarEl.reset();
+      carregarProdutos();
+    } else {
+      const erro = await res.json();
+      alert(`Erro ao editar produto: ${erro?.message || res.status}`);
+    }
+  } catch (erro) {
+    alert("Erro ao se conectar ao servidor.");
+    console.error(erro);
+  }
+});
+
+// ========== TABELA ==========
+function popularTabela(produtos) {
+  if (!produtos || produtos.length === 0) {
+    lista.innerHTML = "<tr><td colspan='7'>Nenhum produto encontrado.</td></tr>";
     return;
   }
 
-  tabelaProdutos.innerHTML = "";
-
-  listaProdutos.forEach(produto => {
-    tabelaProdutos.innerHTML += `
+  lista.innerHTML = "";
+  produtos.forEach((produto) => {
+    lista.innerHTML += `
       <tr>
         <td>${produto.nome}</td>
+        <td>${produto.descricao}</td>
+        <td>${produto.marca} - ${produto.modelo}</td>
         <td>${produto.categoria}</td>
         <td>R$ ${produto.preco.toFixed(2)}</td>
-        <td>${produto.quantidade}</td>
+        <td>${produto.estoque}</td>
         <td>
-          <button class="editar" data-id="${produto.id}" title="Editar produto">
-            ✏️
-          </button>
-          <button class="deletar" data-id="${produto.id}" title="Deletar produto">
-            🗑️
-          </button>
+          <button class="editar" data-id="${produto.id}" title="Editar produto">✏️</button>
+          <button class="deletar" data-id="${produto.id}" title="Deletar produto">🗑️</button>
         </td>
       </tr>
     `;
   });
 
-  // Botões editar
-  document.querySelectorAll(".editar").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const id = btn.getAttribute("data-id");
-      produtoIdEditar = id;
-      const produto = produtosCache.find(p => p.id == id);
-      if (!produto) return alert("Produto não encontrado!");
-
-      modalTitle.textContent = "Editar Produto";
-      formProduto.nome.value = produto.nome;
-      formProduto.categoria.value = produto.categoria;
-      formProduto.preco.value = produto.preco;
-      formProduto.quantidade.value = produto.quantidade;
-
-      modal.classList.add("show");
+  // Eventos de deletar
+  document.querySelectorAll(".deletar").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const id = botao.getAttribute("data-id");
+      if (confirm("Tem certeza que deseja deletar este produto?")) {
+        deletarProduto(id);
+      }
     });
   });
 
-  // Botões deletar
-  document.querySelectorAll(".deletar").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.getAttribute("data-id");
-      if (confirm("Tem certeza que deseja deletar este produto?")) {
-        await deletarProduto(id);
-        carregarProdutos();
-      }
+  // Eventos de editar
+  document.querySelectorAll(".editar").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const id = Number(botao.getAttribute("data-id")); // <-- CORREÇÃO AQUI
+      const produto = produtosCarregados.find(p => p.id === id);
+      if (produto) preencherFormularioEdicao(produto);
     });
   });
 }
 
-// Cadastrar novo produto ou editar existente
-formProduto.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("Usuário não autenticado!");
-    return;
-  }
-
-  const produto = {
-    nome: formProduto.nome.value.trim(),
-    categoria: formProduto.categoria.value.trim(),
-    preco: parseFloat(formProduto.preco.value),
-    quantidade: parseInt(formProduto.quantidade.value),
-  };
-
-  if (!produto.nome || !produto.categoria || isNaN(produto.preco) || isNaN(produto.quantidade)) {
-    alert("Preencha todos os campos corretamente.");
-    return;
-  }
-
-  try {
-    let res;
-
-    if (produtoIdEditar) {
-      // Editar
-      res = await fetch(`http://localhost:5000/api/produtos/editarProduto/${produtoIdEditar}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(produto)
-      });
-    } else {
-      // Novo produto
-      res = await fetch("http://localhost:5000/api/produtos/criarProduto", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(produto)
-      });
-    }
-
-    if (res.ok) {
-      alert(produtoIdEditar ? "Produto atualizado com sucesso!" : "Produto criado com sucesso!");
-      modal.classList.remove("show");
-      produtoIdEditar = null;
-      formProduto.reset();
-      carregarProdutos();
-    } else {
-      const erro = await res.json();
-      alert(`Erro: ${erro?.message || res.status}`);
-    }
-
-  } catch (error) {
-    alert("Erro na conexão com o servidor.");
-    console.error(error);
-  }
-});
-
-// Deletar produto
+// ========== DELETAR ==========
 async function deletarProduto(id) {
   const token = localStorage.getItem("token");
+  if (!token) return alert("Usuário não autenticado!");
+
   try {
     const res = await fetch(`http://localhost:5000/api/produtos/excluirProduto/${id}`, {
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        "Authorization": `Bearer ${token}`,
+      },
     });
 
-    if (!res.ok) {
-      alert("Erro ao deletar produto!");
+    if (res.ok) {
+      carregarProdutos();
+    } else {
+      const erro = await res.json();
+      alert(`Erro ao deletar produto: ${erro?.message || res.status}`);
     }
-  } catch (error) {
-    alert("Erro na conexão com o servidor!");
-    console.error(error);
+  } catch (erro) {
+    alert("Erro ao se conectar ao servidor.");
+    console.error(erro);
   }
 }
 
-// Pesquisa produtos
-inputPesquisa.addEventListener("input", () => {
-  const termo = inputPesquisa.value.toLowerCase().trim();
+// ========== CARREGAR PRODUTOS ==========
+async function carregarProdutos() {
+  const token = localStorage.getItem("token");
+  if (!token) return alert("Usuário não autenticado!");
 
-  const produtosFiltrados = produtosCache.filter(produto => {
-    return (
-      produto.nome.toLowerCase().includes(termo) ||
-      produto.categoria.toLowerCase().includes(termo)
-    );
+  try {
+    const res = await fetch("http://localhost:5000/api/produtos/listaProduto", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      alert("Erro ao carregar produtos.");
+      return;
+    }
+
+    const data = await res.json();
+    produtosCarregados = data.produtos || [];
+    popularTabela(produtosCarregados);
+  } catch (erro) {
+    alert("Erro na conexão com o servidor.");
+    console.error(erro);
+  }
+}
+
+// ========== BUSCA ==========
+if (buscaInput) {
+  buscaInput.addEventListener("input", () => {
+    const termo = buscaInput.value.toLowerCase();
+
+    const produtosFiltrados = produtosCarregados.filter((produto) => {
+      return (
+        (produto.nome ?? "").toLowerCase().includes(termo) ||
+        (produto.descricao ?? "").toLowerCase().includes(termo) ||
+        (produto.marca ?? "").toLowerCase().includes(termo) ||
+        (produto.modelo ?? "").toLowerCase().includes(termo) ||
+        (produto.categoria ?? "").toLowerCase().includes(termo)
+      );
+    });
+
+    popularTabela(produtosFiltrados);
   });
+}
 
-  exibirProdutos(produtosFiltrados);
-});
-
-// Botão sair (igual clientes e dashboard)
-const sair = document.getElementById("sair");
-sair.addEventListener("click", () => {
-  sair.textContent = "Saindo...";
-  localStorage.removeItem("token");
-  setTimeout(() => window.location.href = "./Login.html", 1000);
-});
-
-// Carregar produtos ao abrir a página
+// ========== INICIAR ==========
 carregarProdutos();

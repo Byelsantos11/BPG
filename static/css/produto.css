@@ -1,5 +1,6 @@
-@import url('dashboard.css');
+@import url('dashboard.css'); /* Estilo base compartilhado */
 
+/* Cabeçalho da página */
 .main header {
   display: flex;
   justify-content: space-between;
@@ -8,6 +9,7 @@
   flex-wrap: wrap;
 }
 
+/* Botão novo produto */
 #btn-novo-produto {
   background-color: #2563eb;
   color: white;
@@ -18,6 +20,7 @@
   flex-shrink: 0;
 }
 
+/* Campo de busca */
 .busca {
   width: 100%;
   max-width: 400px;
@@ -28,19 +31,21 @@
   box-sizing: border-box;
 }
 
+/* Tabela principal */
 table {
   width: 100%;
   border-collapse: collapse;
   background: white;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
 
 th, td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #eee;
+  word-wrap: break-word;
 }
 
 th {
@@ -48,12 +53,13 @@ th {
   font-weight: 600;
 }
 
+/* Formulário de produto */
 .formulario {
   background: white;
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -63,16 +69,17 @@ th {
   margin-bottom: 15px;
 }
 
-.formulario input,
-.formulario select {
+.formulario input {
   display: block;
   width: 100%;
   margin-bottom: 12px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  box-sizing: border-box;
 }
 
+/* Botões do formulário */
 .botoes {
   display: flex;
   justify-content: flex-end;
@@ -95,12 +102,14 @@ th {
   color: white;
 }
 
+/* Esconder elementos */
 .oculto {
   display: none;
 }
 
+/* Estilos dos botões de ação */
 button.editar svg {
-  color: #2563eb; 
+  color: #2563eb;
   transition: color 0.3s ease;
 }
 
@@ -109,7 +118,7 @@ button.editar:hover svg {
 }
 
 button.deletar svg {
-  color: #bd0404; 
+  color: #bd0404;
   transition: color 0.3s ease;
 }
 
@@ -117,60 +126,107 @@ button.deletar:hover svg {
   color: #7a0000;
 }
 
-/* Responsividade igual cliente.css (table blocks, campos adaptados) */
+/* RESPONSIVO */
+
+/* Tablets e telas médias */
 @media (max-width: 768px) {
   .main header {
     flex-direction: column;
+    align-items: stretch;
   }
+
   #btn-novo-produto {
     width: 100%;
     margin-bottom: 10px;
   }
-  .formulario, .busca {
-    width: 100%;
+
+  .busca {
+    max-width: 100%;
   }
+
+  .formulario {
+    width: 100%;
+    padding: 15px;
+  }
+
   .botoes {
     flex-direction: column;
+    align-items: stretch;
   }
+
   .botoes button {
     width: 100%;
   }
+
   table, thead, tbody, th, td, tr {
     display: block;
   }
+
   thead tr {
-    display: none;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
   }
+
   tbody tr {
+    border: 1px solid #ddd;
     margin-bottom: 10px;
-    background: white;
     border-radius: 10px;
     padding: 10px;
+    background: #fff;
   }
+
   tbody td {
-    padding-left: 50%;
+    border: none;
     position: relative;
+    padding-left: 50%;
+    text-align: left;
   }
+
   tbody td::before {
     position: absolute;
-    left: 10px;
+    top: 12px;
+    left: 15px;
+    width: 45%;
+    white-space: nowrap;
     font-weight: 600;
     color: #555;
   }
+
+  /* Etiquetas da tabela no modo responsivo */
   tbody td:nth-of-type(1)::before { content: "Nome"; }
   tbody td:nth-of-type(2)::before { content: "Categoria"; }
   tbody td:nth-of-type(3)::before { content: "Preço"; }
-  tbody td:nth-of-type(4)::before { content: "Estoque"; }
+  tbody td:nth-of-type(4)::before { content: "Quantidade"; }
   tbody td:nth-of-type(5)::before { content: "Ações"; }
+
+  button.editar, button.deletar {
+    margin-right: 10px;
+  }
 }
 
+/* Celulares pequenos */
 @media (max-width: 480px) {
-  #btn-novo-produto, .busca, .formulario input {
+  #btn-novo-produto {
     font-size: 0.9rem;
-    padding: 10px;
+    padding: 8px 12px;
   }
-  .botoes button {
+
+  .busca {
+    padding: 10px;
     font-size: 0.9rem;
+  }
+
+  .formulario input {
     padding: 8px;
+  }
+
+  .botoes button {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  tbody td::before {
+    font-size: 0.9rem;
   }
 }
