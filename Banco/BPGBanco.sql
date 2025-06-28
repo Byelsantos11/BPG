@@ -65,5 +65,19 @@ FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCAD
 
 /*Tabela Garantias*/
 
+CREATE TABLE garantias (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  produto_id BIGINT,
+  pacote_garantia ENUM('Premium', 'Prata', 'Bronze'),
+  status_garantia ENUM('Vencida', 'Estendida', 'Cancelada'),
+  data_inicio DATE,
+  data_expiracao DATE,
+  FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
 
 /*Tabela histórico*/
