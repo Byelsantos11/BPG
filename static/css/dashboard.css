@@ -93,8 +93,11 @@
   
   .card p {
     font-size: 24px;
-    font-weight: bold;
     color: #2563eb ;
+  }
+
+  .card .icon {
+    color: #2564eb7e ;
   }
   
   .conteudo {
