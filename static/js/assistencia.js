@@ -158,12 +158,12 @@ function popularTabela(listaServicos) {
         <td>${s.prioridade}</td>
         <td>
           <button class="editar" data-id="${s.id}" title="Editar serviço">
-            <svg class="icon icon-editar" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="icon icon-editar" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.06 9.02l.92.92L7.92 17H7v-.92l7.06-7.06M17.66 3c-.26 0-.52.1-.71.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34A1 1 0 0 0 17.66 3M14.06 6.94L4 17v3h3l10.06-10.06-3-3z"/>
             </svg>
           </button>
           <button class="deletar" data-id="${s.id}" title="Deletar serviço">
-            <svg class="icon icon-deletar" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="icon icon-deletar" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" viewBox="0 0 24 24">
               <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zm3.46-9.12 1.41-1.41L12 10.59l1.12-1.12 1.41 1.41L13.41 12l1.12 1.12-1.41 1.41L12 13.41l-1.12 1.12-1.41-1.41L10.59 12l-1.12-1.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
             </svg>
           </button>
@@ -171,17 +171,20 @@ function popularTabela(listaServicos) {
       </tr>
     `;
   });
-}  
+}
 
-// Deletar serviço
+// Deletar ou editar serviço
 lista.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
   if (!token) return alert("Usuário não autenticado!");
 
-  const id = e.target.getAttribute("data-id");
+  const botao = e.target.closest("button");
+  if (!botao) return;
+
+  const id = botao.getAttribute("data-id");
   if (!id) return;
 
-  if (e.target.classList.contains("deletar")) {
+  if (botao.classList.contains("deletar")) {
     if (!confirm("Tem certeza que deseja excluir este serviço?")) return;
 
     try {
@@ -204,12 +207,11 @@ lista.addEventListener("click", async (e) => {
     }
   }
 
-  if (e.target.classList.contains("editar")) {
+  if (botao.classList.contains("editar")) {
     try {
       const servico = servicosCarregados.find(s => s.id == id);
       if (!servico) return alert("Serviço não encontrado.");
 
-      // Preenche o formulário
       document.getElementById("servico_id").value = servico.id;
       document.getElementById("user_id").value = servico.user_id;
       document.getElementById("dispositivo").value = servico.dispositivo;
