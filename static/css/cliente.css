@@ -102,10 +102,23 @@ th {
 }
 
 
+button.editar  {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
 
 button.editar svg {
   color: #2563eb; 
   transition: color 0.3s ease;
+  border: none;
+}
+
+
+button.deletar  {
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 button.editar:hover svg {

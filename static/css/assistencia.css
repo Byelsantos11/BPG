@@ -114,6 +114,13 @@ th {
 }
 
 /* Estilos dos botões de ação */
+
+button.editar{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 button.editar svg {
   color: #2563eb;
   transition: color 0.3s ease;
@@ -121,6 +128,12 @@ button.editar svg {
 
 button.editar:hover svg {
   color: #1e40af;
+}
+
+button.deletar  {
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 button.deletar svg {

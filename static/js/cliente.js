@@ -166,17 +166,21 @@ function exibirClientes(listaClientes) {
         <td>${cliente.endereco} - ${cliente.cidade}</td>
         <td>
           <button class="editar" data-id="${cliente.id}" title="Editar cliente">
-            ✏️
+            <svg class="icon icon-editar" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.06 9.02l.92.92L7.92 17H7v-.92l7.06-7.06M17.66 3c-.26 0-.52.1-.71.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34A1 1 0 0 0 17.66 3M14.06 6.94L4 17v3h3l10.06-10.06-3-3z"/>
+            </svg>
           </button>
-
+  
           <button class="deletar" data-id="${cliente.id}" title="Deletar cliente">
-            🗑️
+            <svg class="icon icon-deletar" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zm3.46-9.12 1.41-1.41L12 10.59l1.12-1.12 1.41 1.41L13.41 12l1.12 1.12-1.41 1.41L12 13.41l-1.12 1.12-1.41-1.41L10.59 12l-1.12-1.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
           </button>
         </td>
       </tr>
     `;
   });
-
+  
   // Eventos dos botões deletar
   document.querySelectorAll(".deletar").forEach((botao) => {
     botao.addEventListener("click", () => {
