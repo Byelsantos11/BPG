@@ -1,5 +1,6 @@
 const sair = document.getElementById("sair");
 
+// Sair
 sair.addEventListener("click", () => {
   sair.textContent = "Saindo...";
   localStorage.removeItem('token');
@@ -24,6 +25,8 @@ async function atualizarClientes() {
   const token = getToken();
   if (!token) return;
 
+
+//Requisição de quantidade (fetch)
   try {
     const res = await fetch("http://localhost:5000/api/clientes/quantidadeCliente", {
       headers: { "Authorization": `Bearer ${token}` }
@@ -42,6 +45,8 @@ async function atualizarProdutos() {
   const token = getToken();
   if (!token) return;
 
+  
+//Requisição de quantidade (fetch)
   try {
     const res = await fetch("http://localhost:5000/api/produtos/quantidadeProduto", {
       headers: { "Authorization": `Bearer ${token}` }
@@ -60,6 +65,8 @@ async function atualizarServicos() {
   const token = getToken();
   if (!token) return;
 
+  
+  //Requisição de quantidade (fetch)
   try {
     const res = await fetch("http://localhost:5000/api/servicos/quantidadeServico", {
       headers: { "Authorization": `Bearer ${token}` }
@@ -78,6 +85,9 @@ async function atualizarGarantias() {
   const token = getToken();
   if (!token) return;
 
+
+
+//Requisição de quantidade (fetch)
   try {
     const res = await fetch("http://localhost:5000/api/garantias/ativas", {
       headers: { "Authorization": `Bearer ${token}` }

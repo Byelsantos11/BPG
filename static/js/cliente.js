@@ -56,6 +56,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
+  //Objeto cliente 
   const cliente = {
     nome: document.getElementById("nome").value,
     email: document.getElementById("email").value,
@@ -65,6 +66,7 @@ form.addEventListener("submit", async (e) => {
     estado: document.getElementById("estado").value,
   };
 
+  //Requisição cria Cliente (fetch)
   try {
     const res = await fetch("http://localhost:5000/api/clientes/criarCliente", {
       method: "POST",
@@ -105,6 +107,7 @@ formEditar.addEventListener("submit", async (e) => {
     return;
   }
 
+  //Objeto Cliente editar
   const clienteEditado = {
     nome: document.getElementById("nomeEditar").value,
     email: document.getElementById("emailEditar").value,
@@ -114,6 +117,7 @@ formEditar.addEventListener("submit", async (e) => {
     estado: document.getElementById("estadoEditar").value,
   };
 
+  //Requisição editar Cliente (fetch)
   try {
     const res = await fetch(
       `http://localhost:5000/api/clientes/editarCliente/${clienteIdEditar}`,
@@ -127,6 +131,7 @@ formEditar.addEventListener("submit", async (e) => {
       }
     );
 
+    //Verificaçao if else para retorno de menssagem
     if (res.ok) {
       alert("Cliente atualizado com sucesso!");
       formClienteEditar.classList.add("oculto");
@@ -267,6 +272,7 @@ carregarClientes();
 async function deletarUsuario(id) {
   const token = localStorage.getItem("token");
 
+  //Requisição excluir Cliente (fetch)
   try {
     const res = await fetch(`http://localhost:5000/api/clientes/excluirCliente/${id}`, {
       method: "DELETE",

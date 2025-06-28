@@ -1,10 +1,12 @@
 document.getElementById("form-login").addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  //Variáveis dos campos de login
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
   const btnEntrar = document.getElementById("entrar");
 
+  //Verificação de vazio
   if (email === "" || senha === "") {
     alert("Preencha todos os campos!");
     return;
@@ -17,9 +19,11 @@ document.getElementById("form-login").addEventListener("submit", async (event) =
     return;
   }
 
+  //Interação de desabilitar botão 
   btnEntrar.disabled = true;
   btnEntrar.textContent = "Entrando...";
 
+  //Requisição de Login (fetch)
   try {
     const response = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
@@ -35,6 +39,7 @@ document.getElementById("form-login").addEventListener("submit", async (event) =
       throw new Error(errorMsg);
     }
 
+    //Guardar o token
     const data = await response.json();
     localStorage.setItem("token", data.token);
 

@@ -8,7 +8,7 @@ sair.addEventListener("click", () => {
   }, 1000);
 });
 
-// Vriáveis 
+// Variáveis 
 const btnNovoProduto = document.getElementById("btn-novo-produto");
 const formProduto = document.getElementById("form-produto");
 const cancelar = document.getElementById("cancelar");
