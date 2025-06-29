@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 const Service = require("./Services");
 
+//Model Historico
 const HistoricoAtendimento = sequelize.define(
   "historico_atendimentos",
   {

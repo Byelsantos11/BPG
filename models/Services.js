@@ -2,9 +2,6 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 const Cliente = require("./Cliente"); // importa o model Cliente corretamente
 
-
-
-
 const Service = sequelize.define("servicos", {
   user_id: {
     type: DataTypes.INTEGER,
@@ -55,17 +52,17 @@ const Service = sequelize.define("servicos", {
   observacao_tecnica: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+
+  data_criacao: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   }
 
 }, {
   tableName: "servicos",
   timestamps: false
 });
-
-
-
-
-
-
 
 module.exports = Service;
