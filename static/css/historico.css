@@ -41,19 +41,24 @@ th {
   table, thead, tbody, th, td, tr {
     display: block;
   }
+
   thead tr {
     display: none;
   }
+
   tbody tr {
     background: #fff;
     margin-bottom: 10px;
     border-radius: 8px;
     padding: 10px;
   }
+
   tbody td {
     position: relative;
     padding-left: 50%;
+    border-bottom: 1px solid #eee;
   }
+
   tbody td::before {
     position: absolute;
     top: 12px;
@@ -61,5 +66,15 @@ th {
     width: 45%;
     font-weight: bold;
     color: #444;
+    white-space: nowrap;
   }
+
+  /* Rótulos das colunas no modo responsivo */
+  tbody td:nth-of-type(1)::before { content: "Cliente"; }
+  tbody td:nth-of-type(2)::before { content: "Dispositivo"; }
+  tbody td:nth-of-type(3)::before { content: "Nº de Série"; }
+  tbody td:nth-of-type(4)::before { content: "Problema"; }
+  tbody td:nth-of-type(5)::before { content: "Técnico"; }
+  tbody td:nth-of-type(6)::before { content: "Status"; }
+  tbody td:nth-of-type(7)::before { content: "Data"; }
 }
