@@ -108,7 +108,6 @@ async function carregarClientesNoFormulario() {
     console.error(err);
   }
 }
-
 // Carregar serviços
 async function carregarServico() {
   const token = localStorage.getItem("token");
@@ -128,7 +127,18 @@ async function carregarServico() {
     }
 
     const data = await res.json();
-    servicosCarregados = Array.isArray(data) ? data : [];
+    // Filtra os serviços pelos status desejados
+    const statusPermitidos = [
+      'Pendente',
+      'Em diagnóstico',
+      'Aguardando peças',
+      'Em andamento'
+    ];
+    const servicosFiltrados = Array.isArray(data)
+      ? data.filter(s => statusPermitidos.includes(s.status_servico))
+      : [];
+
+    servicosCarregados = servicosFiltrados;
     popularTabela(servicosCarregados);
 
   } catch (erro) {
@@ -140,7 +150,7 @@ async function carregarServico() {
 // Exibir serviços na tabela
 function popularTabela(listaServicos) {
   if (!listaServicos || listaServicos.length === 0) {
-    lista.innerHTML = "<tr><td colspan='5'>Nenhum serviço encontrado.</td></tr>";
+    lista.innerHTML = "<tr><td colspan='9'>Nenhum serviço encontrado.</td></tr>";
     return;
   }
 

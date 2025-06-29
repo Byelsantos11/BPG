@@ -89,7 +89,7 @@ async function atualizarGarantias() {
 
 //Requisição de quantidade (fetch)
   try {
-    const res = await fetch("http://localhost:5000/api/garantias/ativas", {
+    const res = await fetch("http://localhost:5000/api/garantias/quantidadeGarantia", {
       headers: { "Authorization": `Bearer ${token}` }
     });
     if (!res.ok) throw new Error("Erro ao buscar garantias ativas");
