@@ -80,4 +80,13 @@ CREATE TABLE garantias (
 
 
 
-/*Tabela histórico*/
+CREATE TABLE historico_atendimentos (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  servico_id BIGINT NOT NULL,
+  data_atendimento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  descricao TEXT,
+  status_atendimento ENUM('Pendente', 'Em andamento', 'Concluído', 'Cancelado') DEFAULT 'Pendente',
+  tecnico ENUM('Michel', 'Celso') NULL,
+  observacoes TEXT,
+  FOREIGN KEY (servico_id) REFERENCES servicos(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
