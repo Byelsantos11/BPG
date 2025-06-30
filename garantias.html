@@ -59,7 +59,7 @@
       </li>
       </a>
 
-  
+
       <a href="./historico.html"><li>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
              viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;">
@@ -70,7 +70,7 @@
         Histórico de Atendimentos
       </li>
       </a>
-     
+      
       <li class="sair">
         <button id="sair">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -85,25 +85,74 @@
     </ul>
   </div>
 
+  <!-- Conteúdo principal -->
   <div class="main">
     <header>
       <h2>Garantias</h2>
+      <button id="btn-novo-garantia">+ Nova Garantia</button>
     </header>
 
+    <!-- Campo de busca -->
+    <input type="text" id="pesquisa-garantia" class="busca" placeholder="Buscar garantias por nome, produto ou pacote..." />
+
+    <!-- Tabela de garantias -->
     <table>
       <thead>
         <tr>
           <th>Cliente</th>
           <th>Produto</th>
+          <th>Pacote</th>
           <th>Data Início</th>
           <th>Data Fim</th>
           <th>Status</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody id="tabela-garantias">
-        <tr><td colspan="5">Carregando garantias...</td></tr>
+        <tr><td colspan="7">Carregando garantias...</td></tr>
       </tbody>
     </table>
+
+    <!-- Formulário de Garantia (embaixo da tabela) -->
+    <div id="form-garantia" class="formulario oculto" style="margin-top: 20px;">
+      <h3 id="titulo-form-garantia">Nova Garantia</h3>
+      <form id="garantia-form">
+        <input type="hidden" id="garantia_id" />
+
+        <select id="user_id" required>
+          <option value="" disabled selected>Selecione o cliente</option>
+        </select>
+
+        <select id="produto_id" required>
+          <option value="" disabled selected>Selecione o produto</option>
+        </select>
+
+        <select id="pacote_garantia" required>
+          <option value="" disabled selected>Pacote de Garantia</option>
+          <option value="Premium">Premium</option>
+          <option value="Prata">Prata</option>
+          <option value="Bronze">Bronze</option>
+        </select>
+
+        <select id="status_garantia" required>
+          <option value="" disabled selected>Status da Garantia</option>
+          <option value="Vencida">Vencida</option>
+          <option value="Estendida">Estendida</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+
+        <label for="data_inicio">Data de Início:</label>
+        <input type="date" id="data_inicio" required />
+
+        <label for="data_expiracao">Data de Expiração:</label>
+        <input type="date" id="data_expiracao" required />
+
+        <div class="botoes">
+          <button type="button" id="cancelar-garantia">Cancelar</button>
+          <button type="submit">Salvar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="./static/js/garantias.js"></script>

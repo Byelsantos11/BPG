@@ -94,7 +94,7 @@ async function atualizarGarantias() {
     });
     if (!res.ok) throw new Error("Erro ao buscar garantias ativas");
     const data = await res.json();
-    document.getElementById("garantias").textContent = data.total || 0;
+    document.getElementById("garantias").textContent = data.quantidade || 0;
   } catch (err) {
     console.error(err);
     document.getElementById("garantias").textContent = "Erro";
