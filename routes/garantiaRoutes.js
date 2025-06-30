@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Garantia, Produto, User } = require("../models");
+const { Garantia, Produto, Cliente } = require("../models");
 const { body, param, validationResult } = require("express-validator");
 const authenticateToken = require("../Middleware/authenticateToken");
 
@@ -39,16 +39,17 @@ router.get("/listarGarantias", authenticateToken, async (req, res) => {
   try {
     const garantias = await Garantia.findAll({
       include: [
-        { model: Produto, attributes: ["nome", "marca", "modelo"] },
-        { model: User, attributes: ["username"] }
+        { model: Produto, as: "produto", attributes: ["nome", "marca", "modelo"] },
+        { model: Cliente, as: "cliente", attributes: ["nome"] }
       ],
       order: [["id", "DESC"]]
     });
-    res.status(200).json(garantias);
+    res.status(200).json({ garantias });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Atualizar Garantia
 router.put(

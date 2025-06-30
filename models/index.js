@@ -8,12 +8,14 @@ const User = require("./User");
 Cliente.hasMany(Service, { foreignKey: "user_id", as: "servicos" });
 Service.belongsTo(Cliente, { foreignKey: "user_id", as: "cliente" });
 
-// Associações de Garantia com Produto e User
-Produto.hasMany(Garantia, { foreignKey: "produto_id" });
-Garantia.belongsTo(Produto, { foreignKey: "produto_id" });
 
-User.hasMany(Garantia, { foreignKey: "user_id" });
-Garantia.belongsTo(User, { foreignKey: "user_id" });
+// Associação Cliente <-> Garantia
+Cliente.hasMany(Garantia, { foreignKey: "user_id", as: "garantias" });
+Garantia.belongsTo(Cliente, { foreignKey: "user_id", as: "cliente" });
+
+// Associação Produto <-> Garantia
+Produto.hasMany(Garantia, { foreignKey: "produto_id", as: "garantias" });
+Garantia.belongsTo(Produto, { foreignKey: "produto_id", as: "produto" });
 
 module.exports = {
   Cliente,

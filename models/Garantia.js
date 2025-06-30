@@ -7,7 +7,7 @@ const Garantia = sequelize.define("Garantia", {
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: { model: "usuarios", key: "id" }
+    references: { model: "clientes", key: "id" }
   },
   produto_id: {
     type: DataTypes.BIGINT,
