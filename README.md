@@ -1,3 +1,6 @@
+<<<<<<< Backend
+# BPG-store
+=======
 # 🛍️ BPG-Store - Sistema de Gerenciamento de Loja
 
 O **BPG-Store** é um sistema criado para ajudar um colega de classe a gerenciar sua loja de forma mais prática e rápida. A ideia é simplificar tarefas do dia a dia, organizar melhor as informações e dar mais controle sobre os dados da loja, tudo com uma interface fácil de usar.
@@ -64,3 +67,4 @@ Obs! O front-end já esta fazendo requisição ao backend
 
 
 
+>>>>>>> master
