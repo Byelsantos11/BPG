@@ -73,7 +73,7 @@ CREATE TABLE garantias (
   status_garantia ENUM('Vencida', 'Estendida', 'Cancelada'),
   data_inicio DATE,
   data_expiracao DATE,
-  FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES clientes(id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
