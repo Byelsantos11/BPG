@@ -54,7 +54,7 @@ Clonar:
 git clone https://github.com/Byelsantos11/BPG.git
 
 Acesse a pasta backend: 
-cd BPG/backend
+cd BPG
 
 Instalar as depedências do Node.Js:
 npm install
@@ -62,7 +62,7 @@ npm install
 Rodar:
 npm run dev
 
-Obs! O front-end já esta fazendo requisição ao backend 
+Obs! O front-end já esta fazendo requisição ao backend. Adicione o banco em sua máquina.
 
 
 
