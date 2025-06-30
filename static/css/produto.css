@@ -1,0 +1,263 @@
+@import url('dashboard.css'); /* Estilo base compartilhado */
+
+/* ------------------ CABEÇALHO ------------------ */
+.main header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px; /* Espaçamento entre itens ao quebrar linha */
+}
+
+/* Botão novo produto */
+#btn-novo-produto {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Campo de busca */
+.busca {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 17px;
+}
+
+/* ------------------ TABELA ------------------ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  word-wrap: break-word;
+}
+
+th {
+  background-color: #e5e7eb;
+  font-weight: 600;
+}
+
+td:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ------------------ FORMULÁRIO ------------------ */
+.formulario {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.formulario h3 {
+  margin-bottom: 15px;
+}
+
+.formulario input,
+.formulario select {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+/* ------------------ BOTÕES DO FORMULÁRIO ------------------ */
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.botoes button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.botoes #cancelar {
+  background-color: #ccc;
+}
+
+.botoes button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* ------------------ ESTILOS GERAIS ------------------ */
+.oculto {
+  display: none;
+}
+
+/* Botões de ação */
+button.editar  {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+button.editar svg {
+  color: #2563eb;
+  transition: color 0.3s ease;
+}
+
+button.editar:hover svg {
+  color: #1e40af;
+}
+
+button.deletar  {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+button.deletar svg {
+  color: #bd0404;
+  transition: color 0.3s ease;
+}
+
+button.deletar:hover svg {
+  color: #7a0000;
+}
+
+/* ------------------ RESPONSIVO ------------------ */
+
+/* Telas médias (tablets) */
+@media (max-width: 768px) {
+  .main header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #btn-novo-produto {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .busca {
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .formulario {
+    width: 100%;
+    padding: 15px;
+    margin: 0 10px;
+  }
+
+  .botoes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .botoes button {
+    width: 100%;
+  }
+
+  /* Tabela responsiva */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tbody tr {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  tbody td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+  }
+
+  tbody td::before {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: 600;
+    color: #555;
+  }
+
+  /* Etiquetas das colunas da tabela */
+  tbody td:nth-of-type(1)::before { content: "Nome"; }
+  tbody td:nth-of-type(2)::before { content: "Descrição"; }
+  tbody td:nth-of-type(3)::before { content: "Marca-modelo"; }
+  tbody td:nth-of-type(4)::before { content: "Categoria"; }
+  tbody td:nth-of-type(5)::before { content: "Preço"; }
+  tbody td:nth-of-type(6)::before { content: "Estoque"; }
+  tbody td:nth-of-type(7)::before { content: "Ação"; }
+
+  button.editar, button.deletar {
+    margin-right: 10px;
+  }
+}
+
+/* Telas pequenas (celulares) */
+@media (max-width: 480px) {
+  #btn-novo-produto {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  .busca {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .formulario input,
+  .formulario select {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .botoes button {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  tbody td::before {
+    font-size: 0.9rem;
+  }
+}
